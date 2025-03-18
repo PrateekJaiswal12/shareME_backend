@@ -2,7 +2,7 @@ import Pin from "../models/pin.js";
 import Comment from '../models/comment.js'
 import Save from '../models/save.js'
 import { deleteFromServer, saveNewImage, uploadImageToCloud } from "../utility/image.js";
-import mongoose from "mongoose";
+// import mongoose from "mongoose";
 
 
 export const createPin = async (req, res, next) => {
@@ -162,7 +162,6 @@ export const getCreatedPins = async (req, res) => {
     const { id } = req.params
     try {
         const pins = await Pin.find({ postedBy: id }).populate('save');
-
 
         res.status(200).json({
             success: true,

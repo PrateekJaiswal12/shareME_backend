@@ -2,20 +2,16 @@ import cookieParser from 'cookie-parser';
 import User from '../models/user.js'
 import jwt from 'jsonwebtoken'
 
-export const userLogin = async (req, res, next) => {
-    const { uid, name, photo } = req.body
-    
+export const userLogin = async (req, res, _next) => {
+    const { uid, name, photo } = req.body   
     const encodedId = jwt.sign(uid, process.env.JWT_SECRET_KEY)
 
     let user = await User.findOne({ uid:encodedId });
-
-
 
     if (!user) {
         user = await User.create({
             uid:encodedId, name, photo
         })
-
 
         return res.status(201).cookie("uid", encodedId, {
             maxAge: 24 * 60 * 60 * 60 * 1000,
@@ -35,7 +31,7 @@ export const userLogin = async (req, res, next) => {
     })
 }
 
-export const userLogout = (req, res, next) => {
+export const userLogout = (req, res, _next) => {
     res.cookie("uid", "", {
         expire: new Date(Date.now())
     }).json({
@@ -44,7 +40,7 @@ export const userLogout = (req, res, next) => {
     })
 }
 
-export const getUserInfo = async (req, res, next) => {
+export const getUserInfo = async (req, res, _next) => {
     const { id } = req.params;
     const user = await User.findById(id);
     res.status(200).json({
